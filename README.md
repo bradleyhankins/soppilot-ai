@@ -36,9 +36,9 @@ SOPPilot AI is designed for:
 - Team leads
 - Process improvement teams
 
-## Current Version: v2.0
+## Current Version: v2.1
 
-SOPPilot AI v2.0 includes:
+SOPPilot AI v2.1 includes:
 
 - Portfolio Hub-style executive design
 - Public-safe sample process scenarios
@@ -47,6 +47,8 @@ SOPPilot AI v2.0 includes:
 - Process risk and usage inputs
 - Rough workflow input
 - Quality and escalation inputs
+- Documentation Readiness Score
+- Version Control block
 - Process complexity logic
 - Risk diagnosis logic
 - Rollout readiness guidance
@@ -65,6 +67,8 @@ SOPPilot AI v2.0 includes:
 
 The app allows users to load a fictional sample process or enter process information and rough steps, then generates:
 
+- Documentation readiness score
+- Version control block
 - Process complexity level
 - Complexity score
 - Risk diagnosis
@@ -84,14 +88,16 @@ The app allows users to load a fictional sample process or enter process informa
 1. Launch the live demo.
 2. Load the “New Lead Follow-Up” sample process.
 3. Generate the SOP package.
-4. Review the complexity, risk diagnosis, and rollout readiness snapshot.
+4. Review the documentation readiness score, version control block, complexity, risk diagnosis, and rollout readiness snapshot.
 5. Review the missing-information check and improvement recommendations.
 6. Review the SOP, checklist, training plan, quality control guide, and implementation plan tabs.
 7. Download the SOP package.
 
 ## Screenshots
 
-Screenshots will be refreshed after all portfolio apps are upgraded and visually verified.
+### Readiness Score and Version Control
+
+![SOPPilot AI Readiness Score and Version Control](screenshots/readiness-version-control.svg)
 
 ## Tech Stack
 
@@ -140,7 +146,7 @@ Common issues include:
 
 SOPPilot AI was built as a lightweight AI-assisted process documentation workflow tool.
 
-The app allows a manager to load a sample process or enter rough process details, then generates a complete SOP package with complexity guidance, risk diagnosis, readiness guidance, missing-information checks, improvement recommendations, SOPs, checklists, training plans, quality control guides, and rollout plans.
+The app allows a manager to load a sample process or enter rough process details, then generates a complete SOP package with documentation readiness scoring, version control, complexity guidance, risk diagnosis, readiness guidance, missing-information checks, improvement recommendations, SOPs, checklists, training plans, quality control guides, and rollout plans.
 
 ### My Role
 
@@ -151,6 +157,7 @@ I designed and built this project from concept to deployment, including:
 - Mapping process complexity logic
 - Creating process risk diagnosis logic
 - Creating rollout readiness logic
+- Creating documentation readiness scoring
 - Building the Streamlit app
 - Writing the rules-based AI-style documentation generator
 - Creating manager-ready process summaries
