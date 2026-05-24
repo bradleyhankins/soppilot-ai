@@ -13,6 +13,10 @@ It helps managers turn rough process notes into:
 - Implementation plans
 - Downloadable SOP packages
 
+## Live Demo
+
+[Launch SOPPilot AI](https://soppilot-ai.streamlit.app/)
+
 ## Why this project exists
 
 Small and mid-sized businesses often rely on tribal knowledge, verbal instructions, scattered notes, and inconsistent training. SOPPilot AI helps convert messy process knowledge into repeatable documentation that teams can use to improve consistency.
