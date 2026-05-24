@@ -1,5 +1,7 @@
 import streamlit as st
 
+from ai_helpers import enhance_text
+
 st.set_page_config(page_title="SOPPilot AI", page_icon="📋", layout="wide")
 
 DEPARTMENTS = ["Sales", "Operations", "Customer Service", "Production / Project Management", "Recruiting / HR", "Administration", "Other"]
@@ -106,29 +108,11 @@ def determine_complexity(frequency, risk, team_size):
 
 
 def role_guidance(owner_role):
-    guidance = {
-        "Sales Representative": "Keep the process customer-facing and focused on communication, follow-up, and documentation.",
-        "Sales Manager": "Include accountability checkpoints, coaching expectations, and measurable review standards.",
-        "Operations Manager": "Include handoffs, documentation standards, quality checks, and escalation paths.",
-        "Project Manager": "Focus on readiness, communication, documentation, and completion standards.",
-        "Customer Service Representative": "Emphasize response time, notes, issue resolution, and customer experience.",
-        "Recruiter / Hiring Manager": "Include review steps, documentation, interview consistency, and next-step ownership.",
-        "General Team Member": "Use simple step-by-step instructions that are easy to follow and repeat.",
-    }
-    return guidance.get(owner_role, guidance["General Team Member"])
+    return {"Sales Representative": "Keep the process customer-facing and focused on communication, follow-up, and documentation.", "Sales Manager": "Include accountability checkpoints, coaching expectations, and measurable review standards.", "Operations Manager": "Include handoffs, documentation standards, quality checks, and escalation paths.", "Project Manager": "Focus on readiness, communication, documentation, and completion standards.", "Customer Service Representative": "Emphasize response time, notes, issue resolution, and customer experience.", "Recruiter / Hiring Manager": "Include review steps, documentation, interview consistency, and next-step ownership.", "General Team Member": "Use simple step-by-step instructions that are easy to follow and repeat."}.get(owner_role, "Use simple step-by-step instructions that are easy to follow and repeat.")
 
 
 def role_quality_standards(owner_role):
-    standards = {
-        "Sales Representative": ["Customer contact attempts are documented", "Next step is clear", "Follow-up task is created when needed", "Communication is professional and timely"],
-        "Sales Manager": ["Rep activity is reviewed", "Coaching notes are documented", "Accountability expectations are clear", "Performance issue has a next action"],
-        "Operations Manager": ["Handoff is complete", "Owner is clear", "System notes are accurate", "Escalations are documented"],
-        "Project Manager": ["Job status is accurate", "Customer/internal updates are documented", "Issues are escalated quickly", "Completion standard is verified"],
-        "Customer Service Representative": ["Customer concern is documented", "Response is timely", "Resolution or next step is clear", "Escalation happens when needed"],
-        "Recruiter / Hiring Manager": ["Status is updated", "Notes are complete", "Next step is documented", "Review criteria are consistent"],
-        "General Team Member": ["Steps are completed in order", "Documentation is clear", "Issues are escalated", "Final outcome is reviewed"],
-    }
-    return standards.get(owner_role, standards["General Team Member"])
+    return {"Sales Representative": ["Customer contact attempts are documented", "Next step is clear", "Follow-up task is created when needed", "Communication is professional and timely"], "Sales Manager": ["Rep activity is reviewed", "Coaching notes are documented", "Accountability expectations are clear", "Performance issue has a next action"], "Operations Manager": ["Handoff is complete", "Owner is clear", "System notes are accurate", "Escalations are documented"], "Project Manager": ["Job status is accurate", "Customer/internal updates are documented", "Issues are escalated quickly", "Completion standard is verified"], "Customer Service Representative": ["Customer concern is documented", "Response is timely", "Resolution or next step is clear", "Escalation happens when needed"], "Recruiter / Hiring Manager": ["Status is updated", "Notes are complete", "Next step is documented", "Review criteria are consistent"], "General Team Member": ["Steps are completed in order", "Documentation is clear", "Issues are escalated", "Final outcome is reviewed"]}.get(owner_role, ["Steps are completed in order", "Documentation is clear", "Issues are escalated", "Final outcome is reviewed"])
 
 
 def missing_info_check(process):
@@ -194,12 +178,11 @@ def improvement_recommendations(complexity, risk_level, missing_items):
 
 
 def version_control_block(process, score):
-    today = "Generated Date"
     return f"""## Version Control
 Version: 1.0
 Owner: {process['owner_role']}
 Department: {process['department']}
-Last Reviewed: {today}
+Last Reviewed: Generated Date
 Next Review Date: 30 days after rollout
 Documentation Readiness Score: {score}%
 Status: {readiness_score_status(score)}
@@ -343,9 +326,26 @@ Generated by SOPPilot AI.
 """
 
 
+def enhance_package(process, full_package):
+    prompt = f"""
+You are an operations documentation specialist.
+Improve the SOP documentation package below while preserving the same structure and facts.
+Do not invent policies, prices, legal requirements, or company-specific rules.
+If information is missing, keep it as a missing information item.
+Make the writing cleaner, more professional, and easier for a manager to use.
+
+Process context:
+{process}
+
+Rules-based SOP package:
+{full_package}
+"""
+    return enhance_text(prompt, full_package, f"soppilot_package_{hash(str(process))}")
+
+
 with st.sidebar:
     st.title("SOPPilot AI")
-    st.caption("Version 2.1")
+    st.caption("Version 2.2")
     st.markdown("Process documentation and training workflow assistant for small-business teams.")
     st.divider()
     st.markdown("### Outputs")
@@ -366,7 +366,6 @@ with st.form("sop_form"):
         department = st.selectbox("Department", DEPARTMENTS, index=DEPARTMENTS.index(scenario.get("department", "Sales")))
     with c:
         owner_role = st.selectbox("Process Owner Role", OWNER_ROLES, index=OWNER_ROLES.index(scenario.get("owner_role", "Sales Representative")))
-
     form_group("Process risk and usage")
     d, e, f = st.columns(3)
     with d:
@@ -375,7 +374,6 @@ with st.form("sop_form"):
         risk = st.selectbox("Risk Level if Done Incorrectly", RISK_LEVELS, index=RISK_LEVELS.index(scenario.get("risk", "Medium")))
     with f:
         team_size = st.selectbox("How Many People Use This Process?", TEAM_SIZES, index=TEAM_SIZES.index(scenario.get("team_size", "1-3 people")))
-
     form_group("Process details")
     g, h = st.columns(2)
     with g:
@@ -384,10 +382,8 @@ with st.form("sop_form"):
     with h:
         goal = st.text_area("What Is the Goal of This Process?", value=scenario.get("goal", ""), height=110)
         tools = st.text_area("Tools / Systems Used", value=scenario.get("tools", ""), height=110)
-
     form_group("Rough workflow")
     steps = st.text_area("Rough Process Steps", value=scenario.get("steps", ""), height=190, placeholder="Enter one step per line...")
-
     form_group("Quality and escalation")
     i, j = st.columns(2)
     with i:
@@ -415,6 +411,7 @@ quality = generate_quality_control(process)
 implementation = generate_implementation_plan(process, complexity, recommendations)
 manager_summary_text = generate_manager_summary(process, complexity, risk_label, readiness, score)
 full_package = generate_full_package(process, complexity, complexity_score, risk_label, readiness, score, missing_items, recommendations, manager_summary_text, sop, checklist, training, quality, implementation)
+enhanced_package = enhance_package(process, full_package)
 
 section_title("SOP package snapshot")
 s1, s2, s3, s4 = st.columns(4)
@@ -443,7 +440,7 @@ section_title("Manager summary")
 st.text_area("Manager-ready process summary", manager_summary_text, height=240)
 
 section_title("Generated documentation")
-tabs = st.tabs(["SOP", "Checklist", "Training Plan", "Quality Control", "Implementation Plan"])
+tabs = st.tabs(["SOP", "Checklist", "Training Plan", "Quality Control", "Implementation Plan", "Complete Package"])
 with tabs[0]:
     st.text_area("Generated SOP", sop, height=420)
 with tabs[1]:
@@ -454,11 +451,13 @@ with tabs[3]:
     st.text_area("Generated Quality Control Guide", quality, height=390)
 with tabs[4]:
     st.text_area("Generated Implementation Plan", implementation, height=390)
+with tabs[5]:
+    st.text_area("Complete Documentation Package", enhanced_package, height=520)
 
 section_title("Download SOP package")
-st.download_button("Download SOP Package", data=full_package, file_name="soppilot-sop-package.md", mime="text/markdown", use_container_width=True)
+st.download_button("Download SOP Package", data=enhanced_package, file_name="soppilot-sop-package.md", mime="text/markdown", use_container_width=True)
 
 section_title("What this app demonstrates")
-html_card("Portfolio Skills Shown", "<ul><li>Process mapping and documentation logic</li><li>Risk and readiness scoring</li><li>Version-control style business documentation</li><li>Training and quality-control workflow design</li><li>Downloadable SOP packages</li></ul>", "success-card")
+html_card("Portfolio Skills Shown", "<ul><li>AI-enhanced SOP package with rules-based fallback</li><li>Process mapping and documentation logic</li><li>Risk and readiness scoring</li><li>Version-control style business documentation</li><li>Training and quality-control workflow design</li><li>Downloadable SOP packages</li></ul>", "success-card")
 
 st.markdown('<div class="note-box">Privacy note: Information entered into this app is processed during the active session and is not saved by this app.</div>', unsafe_allow_html=True)
