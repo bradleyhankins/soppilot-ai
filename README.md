@@ -1,6 +1,6 @@
 # SOPPilot AI
 
-SOPPilot AI is a process documentation and training workflow assistant for small-business teams.
+SOPPilot AI is an AI-enhanced process documentation and training workflow assistant for small-business teams.
 
 It helps managers turn rough process notes into:
 
@@ -13,42 +13,37 @@ It helps managers turn rough process notes into:
 - Training plans
 - Quality control guides
 - Implementation plans
+- AI-enhanced complete SOP packages with rules-based fallback
 - Downloadable SOP packages
 
 ## Live Demo
 
 [Launch SOPPilot AI](https://soppilot-ai.streamlit.app/)
 
+## Current Version: v2.2
+
+SOPPilot AI combines a rules-based process documentation engine with embedded AI-enhanced SOP package generation.
+
+The app is designed to work in two layers:
+
+1. **Rules-based core:** creates SOPs, checklists, training plans, quality control guides, implementation plans, readiness scores, risk checks, and version-control blocks.
+2. **Embedded AI layer:** when an OpenAI token is available, the app quietly improves the complete SOP package into a cleaner, more manager-ready document.
+
+If the AI call fails or an API key is unavailable, the app silently falls back to the rules-based SOP package. The user experience stays the same.
+
 ## Why this project exists
 
 Small and mid-sized businesses often rely on tribal knowledge, verbal instructions, scattered notes, and inconsistent training. SOPPilot AI helps convert messy process knowledge into repeatable documentation that teams can use to improve consistency.
 
-## Who this helps
+## Workflow Outputs
 
-SOPPilot AI is designed for:
-
-- Small business owners
-- Operations managers
-- Sales managers
-- Project managers
-- Customer service leaders
-- Recruiting managers
-- Team leads
-- Process improvement teams
-
-## Current Version: v2.1
-
-SOPPilot AI v2.1 includes:
-
-- Portfolio Hub-style executive design
 - Public-safe sample process scenarios
-- Cleaner grouped SOP builder form
 - Process ownership inputs
 - Process risk and usage inputs
 - Rough workflow input
 - Quality and escalation inputs
-- Documentation Readiness Score
-- Version Control block
+- Documentation readiness score
+- Version control block
 - Process complexity logic
 - Risk diagnosis logic
 - Rollout readiness guidance
@@ -60,28 +55,20 @@ SOPPilot AI v2.1 includes:
 - Training plan generator
 - Quality control guide generator
 - Implementation plan generator
+- AI-enhanced complete SOP package with rules-based fallback
 - Downloadable Markdown SOP package
-- Privacy note
 
-## What it does
+## Export Strategy
 
-The app allows users to load a fictional sample process or enter process information and rough steps, then generates:
+Current export:
 
-- Documentation readiness score
-- Version control block
-- Process complexity level
-- Complexity score
-- Risk diagnosis
-- Rollout readiness status
-- Missing-information check
-- Improvement recommendations
-- Manager-ready process summary
-- Standard Operating Procedure
-- Process checklist
-- Training plan
-- Quality control guide
-- Implementation plan
-- Downloadable Markdown SOP package
+- Markdown SOP package (`.md`) for GitHub-friendly and developer-friendly documentation
+
+Planned next upgrade:
+
+- PDF SOP package for a more user-friendly manager/training deliverable
+
+The markdown export is useful for transparency and version control, but PDF is the better format for non-technical users.
 
 ## Suggested Test Flow
 
@@ -90,7 +77,7 @@ The app allows users to load a fictional sample process or enter process informa
 3. Generate the SOP package.
 4. Review the documentation readiness score, version control block, complexity, risk diagnosis, and rollout readiness snapshot.
 5. Review the missing-information check and improvement recommendations.
-6. Review the SOP, checklist, training plan, quality control guide, and implementation plan tabs.
+6. Review the SOP, checklist, training plan, quality control guide, implementation plan, and AI-enhanced complete package.
 7. Download the SOP package.
 
 ## Screenshots
@@ -103,7 +90,9 @@ The app allows users to load a fictional sample process or enter process informa
 
 - Python
 - Streamlit
-- Rules-based AI-style workflow logic
+- OpenAI API integration
+- Rules-based process documentation logic
+- Silent AI fallback pattern
 - Markdown report export
 - GitHub
 - Streamlit Community Cloud
@@ -115,15 +104,19 @@ py -m pip install -r requirements.txt
 py -m streamlit run app.py
 ```
 
+## Environment Variables
+
+To enable embedded AI output:
+
+```bash
+OPENAI_TOKEN=your_api_key_here
+```
+
+The app still works without this token by using the rules-based fallback.
+
 ## Public Demo Note
 
 All sample data, names, companies, and scenarios used in this project are fictional and created for public portfolio demonstration purposes.
-
-## Portfolio Purpose
-
-This project was built as part of Bradley Hankins' AI operations and workflow automation portfolio.
-
-SOPPilot AI demonstrates how practical AI-assisted tools can help small and mid-sized businesses improve documentation, training consistency, process handoffs, quality control, rollout planning, and manager accountability.
 
 ## Case Study
 
@@ -131,70 +124,13 @@ SOPPilot AI demonstrates how practical AI-assisted tools can help small and mid-
 
 Small and mid-sized businesses often rely on tribal knowledge, verbal instructions, scattered notes, and inconsistent training. This creates confusion when processes need to be repeated, taught, reviewed, or improved.
 
-Common issues include:
-
-- No written SOPs
-- Inconsistent training
-- Unclear process ownership
-- Missed steps
-- Weak quality control
-- Poor handoffs
-- No escalation path
-- Managers repeatedly explaining the same process
-
 ### Solution
 
-SOPPilot AI was built as a lightweight AI-assisted process documentation workflow tool.
-
-The app allows a manager to load a sample process or enter rough process details, then generates a complete SOP package with documentation readiness scoring, version control, complexity guidance, risk diagnosis, readiness guidance, missing-information checks, improvement recommendations, SOPs, checklists, training plans, quality control guides, and rollout plans.
-
-### My Role
-
-I designed and built this project from concept to deployment, including:
-
-- Defining the business process documentation problem
-- Designing the SOP input workflow
-- Mapping process complexity logic
-- Creating process risk diagnosis logic
-- Creating rollout readiness logic
-- Creating documentation readiness scoring
-- Building the Streamlit app
-- Writing the rules-based AI-style documentation generator
-- Creating manager-ready process summaries
-- Creating downloadable Markdown SOP packages
-- Preparing fictional sample scenarios for public portfolio use
-- Publishing the project on GitHub
-- Deploying the live demo
+SOPPilot AI turns rough process details into a complete SOP package with scoring, version control, risk guidance, checklists, training plans, quality control, and implementation planning. The embedded AI layer improves the complete package when available while preserving a reliable rules-based fallback.
 
 ### Business Value
 
 SOPPilot AI helps small and mid-sized businesses turn informal knowledge into repeatable process documentation.
-
-The tool can help teams:
-
-- Reduce tribal knowledge
-- Standardize training
-- Improve handoffs
-- Clarify ownership
-- Improve quality control
-- Create manager review checkpoints
-- Reduce repeated explanations
-- Build repeatable operating systems
-- Improve rollout consistency
-- Create downloadable process documentation
-
-### Future Improvements
-
-Planned future improvements include:
-
-- OpenAI API integration for dynamic SOP generation
-- PDF exports
-- SOP template library
-- Saved process libraries
-- Role-based training packages
-- Team process dashboards
-- Approval workflows
-- Version history
 
 ## Built By
 
