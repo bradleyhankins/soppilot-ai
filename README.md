@@ -112,3 +112,80 @@ All sample data, names, companies, and scenarios used in this project are fictio
 
 Bradley Hankins  
 Operations & Revenue Leader | Technology & AI Workflow Integration
+
+## Case Study
+
+### Problem
+
+Small and mid-sized businesses often rely on tribal knowledge, verbal instructions, scattered notes, and inconsistent training. This creates confusion when processes need to be repeated, taught, reviewed, or improved.
+
+Common issues include:
+
+- No written SOPs
+- Inconsistent training
+- Unclear process ownership
+- Missed steps
+- Weak quality control
+- Poor handoffs
+- No escalation path
+- Managers repeatedly explaining the same process
+
+### Solution
+
+SOPPilot AI was built as a lightweight AI-assisted process documentation tool.
+
+The app allows a manager to enter rough process details, then generates:
+
+- Process complexity score
+- Risk diagnosis
+- Missing-information check
+- Improvement recommendations
+- Standard Operating Procedure
+- Process checklist
+- Training plan
+- Quality control guide
+- Implementation plan
+- Downloadable SOP package
+
+### My Role
+
+I designed and built this project from concept to deployment, including:
+
+- Defining the business process documentation problem
+- Designing the SOP input workflow
+- Mapping process complexity logic
+- Creating process risk diagnosis logic
+- Building the Streamlit app
+- Writing the rules-based AI-style documentation generator
+- Creating downloadable Markdown SOP packages
+- Preparing fictional sample scenarios for public portfolio use
+- Publishing the project on GitHub
+- Deploying the live demo
+
+### Business Value
+
+SOPPilot AI helps small and mid-sized businesses turn informal knowledge into repeatable process documentation.
+
+The tool can help teams:
+
+- Reduce tribal knowledge
+- Standardize training
+- Improve handoffs
+- Clarify ownership
+- Improve quality control
+- Create manager review checkpoints
+- Reduce repeated explanations
+- Build repeatable operating systems
+
+### Future Improvements
+
+Planned future improvements include:
+
+- OpenAI API integration for dynamic SOP generation
+- PDF exports
+- SOP template library
+- Saved process libraries
+- Role-based training packages
+- Team process dashboards
+- Approval workflows
+- Version history
