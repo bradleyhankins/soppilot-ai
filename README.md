@@ -79,9 +79,19 @@ The app allows users to load a fictional sample process or enter process informa
 - Implementation plan
 - Downloadable Markdown SOP package
 
+## Suggested Test Flow
+
+1. Launch the live demo.
+2. Load the “New Lead Follow-Up” sample process.
+3. Generate the SOP package.
+4. Review the complexity, risk diagnosis, and rollout readiness snapshot.
+5. Review the missing-information check and improvement recommendations.
+6. Review the SOP, checklist, training plan, quality control guide, and implementation plan tabs.
+7. Download the SOP package.
+
 ## Screenshots
 
-Screenshots will be refreshed after all portfolio apps are upgraded.
+Screenshots will be refreshed after all portfolio apps are upgraded and visually verified.
 
 ## Tech Stack
 
@@ -91,12 +101,6 @@ Screenshots will be refreshed after all portfolio apps are upgraded.
 - Markdown report export
 - GitHub
 - Streamlit Community Cloud
-
-## Portfolio Purpose
-
-This project was built as part of Bradley Hankins' AI operations and workflow automation portfolio.
-
-SOPPilot AI demonstrates how practical AI-assisted tools can help small and mid-sized businesses improve documentation, training consistency, process handoffs, quality control, rollout planning, and manager accountability.
 
 ## Run Locally
 
@@ -109,10 +113,11 @@ py -m streamlit run app.py
 
 All sample data, names, companies, and scenarios used in this project are fictional and created for public portfolio demonstration purposes.
 
-## Built By
+## Portfolio Purpose
 
-Bradley Hankins  
-Operations & Revenue Leader | AI Workflow Automation | RevOps & Process Improvement
+This project was built as part of Bradley Hankins' AI operations and workflow automation portfolio.
+
+SOPPilot AI demonstrates how practical AI-assisted tools can help small and mid-sized businesses improve documentation, training consistency, process handoffs, quality control, rollout planning, and manager accountability.
 
 ## Case Study
 
@@ -183,3 +188,8 @@ Planned future improvements include:
 - Team process dashboards
 - Approval workflows
 - Version history
+
+## Built By
+
+Bradley Hankins  
+Operations & Revenue Leader | AI Workflow Automation | RevOps & Process Improvement
