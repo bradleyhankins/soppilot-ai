@@ -1,6 +1,7 @@
 import streamlit as st
 
 from ai_helpers import enhance_text
+from pdf_helpers import markdown_to_pdf
 
 st.set_page_config(page_title="SOPPilot AI", page_icon="📋", layout="wide")
 
@@ -12,51 +13,9 @@ TEAM_SIZES = ["1-3 people", "4-10 people", "11+ people"]
 
 SAMPLE_PROCESSES = {
     "Blank / Custom": {},
-    "New Lead Follow-Up": {
-        "process_name": "New Lead Follow-Up Process",
-        "department": "Sales",
-        "owner_role": "Sales Representative",
-        "frequency": "Daily",
-        "risk": "High",
-        "team_size": "4-10 people",
-        "trigger": "A new lead is assigned to a sales representative.",
-        "goal": "Contact the lead quickly, document the outcome, and schedule the next step.",
-        "inputs": "Customer name, phone number, project type, lead source, appointment availability, and notes from intake.",
-        "tools": "CRM, phone, text messaging, email, calendar, and manager dashboard.",
-        "steps": "Review the new lead information\nCall the customer within 5 minutes\nSend a follow-up text if there is no answer\nDocument the contact attempt in the CRM\nSchedule an appointment or set a follow-up task\nNotify the manager if the lead cannot be reached after required attempts",
-        "quality": "Every lead should have a documented contact attempt, clear next step, and follow-up task if not reached.",
-        "escalation": "Escalate to the sales manager if the lead cannot be reached after 3 attempts or if the customer has an urgent issue.",
-    },
-    "Job Handoff": {
-        "process_name": "Sold Job Handoff Process",
-        "department": "Production / Project Management",
-        "owner_role": "Project Manager",
-        "frequency": "Weekly",
-        "risk": "High",
-        "team_size": "4-10 people",
-        "trigger": "A project is sold and needs to move from sales to production.",
-        "goal": "Make sure production has complete project details, customer expectations, and required documents before scheduling work.",
-        "inputs": "Signed agreement, scope of work, photos, measurements, product selections, payment details, customer notes, and scheduling constraints.",
-        "tools": "CRM, project management board, shared files, calendar, email, and customer communication tools.",
-        "steps": "Review signed agreement and scope\nConfirm measurements and product selections\nUpload photos and supporting documents\nDocument customer expectations and special notes\nAssign project manager ownership\nSchedule production review\nConfirm handoff completion in CRM",
-        "quality": "Production should receive a complete and accurate handoff before any work is scheduled.",
-        "escalation": "Escalate to the sales manager or operations manager if scope, pricing, photos, or customer expectations are unclear.",
-    },
-    "Candidate Follow-Up": {
-        "process_name": "Candidate Follow-Up Process",
-        "department": "Recruiting / HR",
-        "owner_role": "Recruiter / Hiring Manager",
-        "frequency": "Weekly",
-        "risk": "Medium",
-        "team_size": "1-3 people",
-        "trigger": "A candidate completes an application, phone screen, or interview.",
-        "goal": "Keep candidates informed, document next steps, and avoid losing qualified applicants due to slow communication.",
-        "inputs": "Candidate name, role, application source, interview notes, availability, next step, and hiring manager feedback.",
-        "tools": "Applicant tracker, email, phone, calendar, and interview notes document.",
-        "steps": "Review candidate status\nConfirm next step with hiring manager\nSend candidate follow-up message\nUpdate applicant tracking notes\nSchedule next interview or document pause reason\nSet reminder for next action",
-        "quality": "Every candidate should have a clear status, documented next step, and timely communication.",
-        "escalation": "Escalate to the hiring manager if feedback is missing or if the candidate is waiting more than 48 hours for next steps.",
-    },
+    "New Lead Follow-Up": {"process_name": "New Lead Follow-Up Process", "department": "Sales", "owner_role": "Sales Representative", "frequency": "Daily", "risk": "High", "team_size": "4-10 people", "trigger": "A new lead is assigned to a sales representative.", "goal": "Contact the lead quickly, document the outcome, and schedule the next step.", "inputs": "Customer name, phone number, project type, lead source, appointment availability, and notes from intake.", "tools": "CRM, phone, text messaging, email, calendar, and manager dashboard.", "steps": "Review the new lead information\nCall the customer within 5 minutes\nSend a follow-up text if there is no answer\nDocument the contact attempt in the CRM\nSchedule an appointment or set a follow-up task\nNotify the manager if the lead cannot be reached after required attempts", "quality": "Every lead should have a documented contact attempt, clear next step, and follow-up task if not reached.", "escalation": "Escalate to the sales manager if the lead cannot be reached after 3 attempts or if the customer has an urgent issue."},
+    "Job Handoff": {"process_name": "Sold Job Handoff Process", "department": "Production / Project Management", "owner_role": "Project Manager", "frequency": "Weekly", "risk": "High", "team_size": "4-10 people", "trigger": "A project is sold and needs to move from sales to production.", "goal": "Make sure production has complete project details, customer expectations, and required documents before scheduling work.", "inputs": "Signed agreement, scope of work, photos, measurements, product selections, payment details, customer notes, and scheduling constraints.", "tools": "CRM, project management board, shared files, calendar, email, and customer communication tools.", "steps": "Review signed agreement and scope\nConfirm measurements and product selections\nUpload photos and supporting documents\nDocument customer expectations and special notes\nAssign project manager ownership\nSchedule production review\nConfirm handoff completion in CRM", "quality": "Production should receive a complete and accurate handoff before any work is scheduled.", "escalation": "Escalate to the sales manager or operations manager if scope, pricing, photos, or customer expectations are unclear."},
+    "Candidate Follow-Up": {"process_name": "Candidate Follow-Up Process", "department": "Recruiting / HR", "owner_role": "Recruiter / Hiring Manager", "frequency": "Weekly", "risk": "Medium", "team_size": "1-3 people", "trigger": "A candidate completes an application, phone screen, or interview.", "goal": "Keep candidates informed, document next steps, and avoid losing qualified applicants due to slow communication.", "inputs": "Candidate name, role, application source, interview notes, availability, next step, and hiring manager feedback.", "tools": "Applicant tracker, email, phone, calendar, and interview notes document.", "steps": "Review candidate status\nConfirm next step with hiring manager\nSend candidate follow-up message\nUpdate applicant tracking notes\nSchedule next interview or document pause reason\nSet reminder for next action", "quality": "Every candidate should have a clear status, documented next step, and timely communication.", "escalation": "Escalate to the hiring manager if feedback is missing or if the candidate is waiting more than 48 hours for next steps."},
 }
 
 CSS = """
@@ -345,11 +304,11 @@ Rules-based SOP package:
 
 with st.sidebar:
     st.title("SOPPilot AI")
-    st.caption("Version 2.2")
+    st.caption("Version 2.3")
     st.markdown("Process documentation and training workflow assistant for small-business teams.")
     st.divider()
     st.markdown("### Outputs")
-    st.markdown("- Readiness score\n- Version control block\n- Standard Operating Procedure\n- Process checklist\n- Risk diagnosis\n- Training plan\n- Quality control guide\n- Downloadable package")
+    st.markdown("- Readiness score\n- Version control block\n- Standard Operating Procedure\n- Process checklist\n- Risk diagnosis\n- Training plan\n- Quality control guide\n- PDF SOP package")
 
 st.markdown('<div class="hero"><div class="eyebrow">Process Documentation Workflow Tool</div><div class="hero-title">SOPPilot AI</div><div class="hero-subtitle">Turn rough process notes into SOPs, process checklists, missing-information checks, risk diagnoses, training plans, quality control guides, implementation plans, and downloadable documentation packages.</div><div class="hero-pills"><span>SOPs</span><span>Training</span><span>Quality Control</span><span>Implementation</span><span>Streamlit</span></div></div>', unsafe_allow_html=True)
 
@@ -412,6 +371,7 @@ implementation = generate_implementation_plan(process, complexity, recommendatio
 manager_summary_text = generate_manager_summary(process, complexity, risk_label, readiness, score)
 full_package = generate_full_package(process, complexity, complexity_score, risk_label, readiness, score, missing_items, recommendations, manager_summary_text, sop, checklist, training, quality, implementation)
 enhanced_package = enhance_package(process, full_package)
+pdf_package = markdown_to_pdf(enhanced_package, title="SOPPilot AI SOP Package")
 
 section_title("SOP package snapshot")
 s1, s2, s3, s4 = st.columns(4)
@@ -455,9 +415,9 @@ with tabs[5]:
     st.text_area("Complete Documentation Package", enhanced_package, height=520)
 
 section_title("Download SOP package")
-st.download_button("Download SOP Package", data=enhanced_package, file_name="soppilot-sop-package.md", mime="text/markdown", use_container_width=True)
+st.download_button("Download SOP Package PDF", data=pdf_package, file_name="soppilot-sop-package.pdf", mime="application/pdf", use_container_width=True)
 
 section_title("What this app demonstrates")
-html_card("Portfolio Skills Shown", "<ul><li>AI-enhanced SOP package with rules-based fallback</li><li>Process mapping and documentation logic</li><li>Risk and readiness scoring</li><li>Version-control style business documentation</li><li>Training and quality-control workflow design</li><li>Downloadable SOP packages</li></ul>", "success-card")
+html_card("Portfolio Skills Shown", "<ul><li>AI-enhanced SOP package with rules-based fallback</li><li>Process mapping and documentation logic</li><li>Risk and readiness scoring</li><li>Version-control style business documentation</li><li>Training and quality-control workflow design</li><li>User-friendly PDF SOP packages</li></ul>", "success-card")
 
 st.markdown('<div class="note-box">Privacy note: Information entered into this app is processed during the active session and is not saved by this app.</div>', unsafe_allow_html=True)
